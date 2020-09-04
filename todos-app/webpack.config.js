@@ -1,7 +1,7 @@
 module.exports = {
     mode: 'development',
     entry:{
-        app:['./src']
+        app:['./src/index.js']
     },
     output: {
         filename: "bundle.js",
