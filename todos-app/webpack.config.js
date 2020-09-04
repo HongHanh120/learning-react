@@ -1,16 +1,12 @@
 module.exports = {
     mode: 'development',
     entry:{
-        app:['./src/main.js']
-    },
-    devServer: {
-        contentBase: __dirname,
-        port:8080,
-        host: 'localhost',
+        app:['./src']
     },
     output: {
         filename: "bundle.js",
-        path:__dirname+"/dist"
+        path:__dirname+"/dist",
+        publicPath: "/"
     },
     module:{
         rules: [
@@ -19,4 +15,4 @@ module.exports = {
                 use :['babel-loader']
             },]
     }
-}
+};

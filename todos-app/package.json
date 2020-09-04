@@ -2,9 +2,9 @@
   "name": "todoapp",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/main.js",
+  "main": "server.js",
   "scripts": {
-    "local": "",
+    "start": "NODE_ENV=local nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -19,6 +19,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "nodemon": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
