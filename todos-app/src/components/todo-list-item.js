@@ -20,7 +20,7 @@ class TodoListItem extends Component {
         if (this.state.isEditing) {
             return (
                 <label className='col-md-7 text-left'>
-                    <form onSubmit={this.onclick.bind(this)}>
+                    <form onSubmit={this.onSaveClick.bind(this)}>
                         <input className="form-control input-sm" defaultValue={task} ref="editInput" type="text"/>
                     </form>
                 </label>

@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import TodoList from "./todo-list";
+import TodoCreate from "./todo-create";
 
 const todos = [
     {
@@ -29,6 +30,10 @@ class App extends Component {
             <div>
                 <h1>React Todo-List</h1>
                 <div className="td-list-con">
+                    <TodoCreate
+                        todos = { this.state.todos }
+                        createTask = { this.createTask.bind(this)}
+                    />
                     <TodoList
                         todos={ this.state.todos }
                         saveTask={ this.saveTask.bind(this) }
