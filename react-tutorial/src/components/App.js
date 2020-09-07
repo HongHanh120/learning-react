@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Table from "./Table";
+import Form from "./Form";
 import _ from 'lodash'
 
 const characters = [
@@ -37,7 +38,8 @@ class App extends Component {
             <div className="container">
                 <Table
                     characters={characters}
-                    removeCharacter={this.removeCharacter.bind(this)}/>
+                    removeCharacter={this.removeCharacter.bind(this)} />
+                <Form handleSubmit={this.handleSubmit} />
             </div>
         )
     };
@@ -46,6 +48,10 @@ class App extends Component {
         _.remove(this.state.characters, character => character.name === name);
         this.setState({characters: this.state.characters});
     }
+
+    handleSubmit = (character) => {
+        this.setState({character: [...this.state.characters, character]})
+    };
 }
 
 export default App
