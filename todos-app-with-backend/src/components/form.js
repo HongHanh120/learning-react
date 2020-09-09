@@ -23,15 +23,16 @@ class Form extends Component {
 
         const input = this.refs.input;
         const task = input.value;
-        console.log(task);
+        // console.log(task);
         const validateInput = this.validateInput(task);
 
-        if(validateInput) {
+        if (validateInput) {
             this.setState({error: validateInput});
             return false;
         }
 
         this.setState({error: null});
+        this.props.createTask(task);
         this.refs.input.value = '';
     };
 
@@ -40,24 +41,25 @@ class Form extends Component {
     }
 
     renderError() {
-        if(!this.state.error) {
+        if (!this.state.error) {
             return null;
         }
         return (
-            <p style={{padding: '5px 10px',
-                       background: '#d9534f',
-                       color:'#fff'}}>{this.state.error}</p>
+            <p style={{
+                padding: '5px 10px',
+                background: '#d9534f',
+                color: '#fff'
+            }}>{this.state.error}</p>
         )
     }
 
     render() {
         return (
             <form className="create form-horizontal" onSubmit={this.handleSubmit}>
-                <div className="form-group">
+                <div className="form-group row">
                     <div className="col-md-10">
                         <input className="form-control"
                                type="text"
-                               // value={this.state.value}
                                onChange={this.handleChange}
                                placeholder="What needs to be done?"
                                ref="input"/>
@@ -72,13 +74,11 @@ class Form extends Component {
     }
 
     validateInput = (task) => {
-        if(!task){
+        if (!task) {
             return "Please enter a task";
-        }
-        else if (_.find(this.props.todos, todo => todo.task === task)){
+        } else if (_.find(this.props.todos, todo => todo.task === task)) {
             return "Task already exist";
-        }
-        else {
+        } else {
             return null;
         }
     }
