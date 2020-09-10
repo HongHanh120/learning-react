@@ -38,7 +38,7 @@ class App extends Component {
                         todos={this.state.todos}
                         saveTask = {this.saveTask.bind(this)}
                         deleteTask = {this.deleteTask.bind(this)}
-                        toogleTask = {this.toogleTask.bind(this)}
+                        toggleTask = {this.toggleTask.bind(this)}
                     />
                 </div>
             </div>
@@ -68,7 +68,7 @@ class App extends Component {
         this.setState({todo: this.state.todos})
     }
 
-    toogleTask(task) {
+    toggleTask(task) {
         const foundTodo = _.find(this.state.todos, todo => todo.task === task);
         foundTodo.is_completed = !foundTodo.is_completed;
         this.setState({todos: this.state.todos})

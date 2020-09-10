@@ -9,7 +9,7 @@ class TodoItem extends Component {
             hover: false,
             hover_edit: false,
             hover_delete: false,
-            hover_save: true,
+            hover_save: false,
             hover_cancel: false
         }
     }
@@ -39,9 +39,9 @@ class TodoItem extends Component {
         return (
             <label className="col-md-8 text-left text"
                    style={task_style}
-                   onClick={this.props.toogleTask.bind(this, task)}
-                   onMouseEnter={this.toogleHover.bind(this)}
-                   onMouseLeave={this.toogleHover.bind(this)}> {task}
+                   onClick={this.props.toggleTask.bind(this, task)}
+                   onMouseEnter={this.toggleHover.bind(this)}
+                   onMouseLeave={this.toggleHover.bind(this)}> {task}
             </label>
         )
     }
@@ -76,12 +76,13 @@ class TodoItem extends Component {
             return (
                 <div className="col-md-3 text-right">
                     <span className="fa fa-save" onClick={this.onSaveClick.bind(this)}
-                          style={save_icon_style} onMouseEnter={this.toogleHoverSave.bind(this)}
-                          onMouseLeave={this.toogleHoverSave.bind(this)}> </span>
+                          style={save_icon_style} onMouseEnter={this.toggleHoverSave.bind(this)}
+                          onMouseLeave={this.toggleHoverSave.bind(this)}> </span>
                     &nbsp; &nbsp; &nbsp;
                     <span className="fa fa-close" onClick={this.onCancelClick.bind(this)}
-                          style={cancel_icon_style} onMouseEnter={this.toogleHoverCancel.bind(this)}
-                          onMouseLeave={this.toogleHoverCancel.bind(this)}> </span>
+                          style={cancel_icon_style} onMouseEnter={this.toggleHoverCancel.bind(this)}
+                          onMouseLeave={this.toggleHoverCancel.bind(this)}
+                    > </span>
                 </div>
             )
         }
@@ -89,12 +90,12 @@ class TodoItem extends Component {
         return (
             <div className="col-md-3 text-right">
                 <span className="fa fa-edit" onClick={this.onEditClick.bind(this)}
-                      style={edit_icon_style} onMouseEnter={this.toogleHoverEdit.bind(this)}
-                      onMouseLeave={this.toogleHoverEdit.bind(this)}> </span>
+                      style={edit_icon_style} onMouseEnter={this.toggleHoverEdit.bind(this)}
+                      onMouseLeave={this.toggleHoverEdit.bind(this)}> </span>
                 &nbsp; &nbsp; &nbsp;
                 <span className="fa fa-trash" onClick={this.props.deleteTask.bind(this, this.props.task)}
-                      style={delete_icon_style} onMouseEnter={this.toogleHoverDelete.bind(this)}
-                      onMouseLeave={this.toogleHoverDelete.bind(this)}> </span>
+                      style={delete_icon_style} onMouseEnter={this.toggleHoverDelete.bind(this)}
+                      onMouseLeave={this.toggleHoverDelete.bind(this)}> </span>
             </div>
         )
     }
@@ -127,23 +128,23 @@ class TodoItem extends Component {
         )
     }
 
-    toogleHover = () => {
+    toggleHover = () => {
         this.setState({hover: !this.state.hover})
     };
 
-    toogleHoverEdit = () => {
+    toggleHoverEdit = () => {
         this.setState({hover_edit: !this.state.hover_edit})
     };
 
-    toogleHoverDelete = () => {
+    toggleHoverDelete = () => {
         this.setState({hover_delete: !this.state.hover_delete})
     };
 
-    toogleHoverSave = () => {
+    toggleHoverSave = () => {
         this.setState({hover_save: !this.state.hover_save})
     };
 
-    toogleHoverCancel = () => {
+    toggleHoverCancel = () => {
         this.setState({hover_cancel: !this.state.hover_cancel})
     };
 
@@ -154,11 +155,12 @@ class TodoItem extends Component {
     }
 
     onEditClick() {
-        this.setState({is_editing: true});
+        this.setState({is_editing: true, hover_edit: false, hover_save: true});
+        console.log(this.state.hover_save)
     }
 
     onCancelClick() {
-        this.setState({is_editing: false});
+        this.setState({is_editing: false, hover_cancel: false, hover_delete: true});
     }
 
     onSaveClick(event) {
@@ -167,7 +169,7 @@ class TodoItem extends Component {
         const oldTask = this.props.task;
         const newTask = this.refs.input.value;
         this.props.saveTask(oldTask, newTask);
-        this.setState({is_editing: false})
+        this.setState({is_editing: false, hover_save: false, hover_edit: true})
     }
 }
 
