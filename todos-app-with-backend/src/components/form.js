@@ -7,12 +7,14 @@ class Form extends Component {
 
         this.state = {
             value: '',
-            error: null
+            error: null,
+            hover: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
 
     handleChange(event) {
         this.setState({value: event.target.value});
@@ -23,7 +25,6 @@ class Form extends Component {
 
         const input = this.refs.input;
         const task = input.value;
-        // console.log(task);
         const validateInput = this.validateInput(task);
 
         if (validateInput) {
@@ -54,6 +55,14 @@ class Form extends Component {
     }
 
     render() {
+        let button_style;
+        if(this.state.hover) {
+            button_style = {background: '#d9534f', cursor: 'pointer', 'color': 'white'}
+        }
+        else {
+            button_style = {background: '#007BFF', color: 'white'}
+        }
+
         return (
             <form className="create form-horizontal" onSubmit={this.handleSubmit}>
                 <div className="form-group row">
@@ -62,16 +71,27 @@ class Form extends Component {
                                type="text"
                                onChange={this.handleChange}
                                placeholder="What needs to be done?"
-                               ref="input"/>
+                               ref="input"
+                        />
                     </div>
                     <div className="col-md-2">
-                        <button type="submit" className="btn btn-default">Create</button>
+                        <button type="submit"
+                                className="btn"
+                                style={button_style}
+                                onMouseEnter={this.toogleHover}
+                                onMouseLeave={this.toogleHover}
+                        >Create</button>
+                        {console.log(this.state.hover)}
                     </div>
                 </div>
                 {this.renderError()}
             </form>
         )
     }
+
+    toogleHover = () => {
+        this.setState({hover: !this.state.hover});
+    };
 
     validateInput = (task) => {
         if (!task) {

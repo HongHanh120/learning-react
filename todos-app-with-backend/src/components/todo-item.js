@@ -5,16 +5,17 @@ class TodoItem extends Component {
         super(props);
 
         this.state = {
-            is_editing: false
+            is_editing: false,
+            hover: false
         }
     }
 
     renderTaskSection() {
         const {task, is_completed} = this.props;
 
-        const task_style = {
+        let task_style = {
             color: is_completed ? '#007BFF' : '#d9534f',
-            cursor: "pointer",
+            cursor: "pointer"
         };
 
         if (this.state.is_editing) {
@@ -27,9 +28,17 @@ class TodoItem extends Component {
             )
         }
 
+        if(this.state.hover) {
+            task_style.color = '#212529';
+        }
+
         return (
-            <label className="col-md-7 text-left text" style={task_style} onClick={this.props.toogleTask.bind(this, task)}>
-                {task}
+            <label className="col-md-7 text-left text"
+                   style={task_style}
+                   onClick={this.props.toogleTask.bind(this, task)}
+                   onMouseEnter={this.toogleHover}
+                   onMouseLeave={this.toogleHover}> {task}
+                {console.log(this.state.hover)}
             </label>
         )
     }
@@ -37,7 +46,7 @@ class TodoItem extends Component {
     renderActionSection() {
         if (this.state.is_editing) {
             return (
-                <div className="col-md-2 text-right">
+                <div className="col-md-3 text-right">
                     <span className="fa fa-save" onClick={this.onSaveClick.bind(this)}> </span>
                     &nbsp; &nbsp; &nbsp;
                     <span className="fa fa-close" onClick={this.onCancelClick.bind(this)}> </span>
@@ -46,7 +55,7 @@ class TodoItem extends Component {
         }
 
         return (
-            <div className="col-md-2 text-right">
+            <div className="col-md-3 text-right">
                 <span className="fa fa-edit" onClick={this.onEditClick.bind(this)}> </span>
                 &nbsp; &nbsp; &nbsp;
                 <span className="fa fa-trash" onClick={this.props.deleteTask.bind(this, this.props.task)}> </span>
@@ -59,14 +68,14 @@ class TodoItem extends Component {
 
         if (is_completed) {
             return (
-                <div className="col-md-2 text-left">
+                <div className="col-md-1 text-left">
                     <span className="fa fa-check-square-o"> </span>
                 </div>
             )
         }
 
         return (
-            <div className="col-md-2 text-left">
+            <div className="col-md-1 text-left">
                 <span className="fa fa-square-o"> </span>
             </div>
         )
@@ -82,6 +91,10 @@ class TodoItem extends Component {
                 {this.renderActionSection()}
             </div>
         )
+    }
+
+    toogleHover() {
+        this.setState({hover: !this.state.hover})
     }
 
     componentDidUpdate() {
