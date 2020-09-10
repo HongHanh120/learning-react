@@ -81,7 +81,7 @@ class Form extends Component {
                                 onMouseEnter={this.toogleHover}
                                 onMouseLeave={this.toogleHover}
                         >Create</button>
-                        {console.log(this.state.hover)}
+                        {/*{console.log(this.state.hover)}*/}
                     </div>
                 </div>
                 {this.renderError()}
