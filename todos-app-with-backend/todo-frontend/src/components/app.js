@@ -2,19 +2,9 @@ import React, {Component} from 'react';
 import Form from './form'
 import TodoList from "./todo-list";
 import _ from 'lodash'
+import axios from 'axios'
 
-const todos = [
-    {
-        id: Date.now(),
-        task: "Create a todo app",
-        is_completed: false
-    },
-    {
-        id: Date.now(),
-        task: "Watch a movie",
-        is_completed: false
-    }
-];
+const todos = [];
 
 class App extends Component {
     constructor(props) {
@@ -22,7 +12,12 @@ class App extends Component {
 
         this.state = {
             todos: todos
-        }
+        };
+
+        // api.get('/').then(res => {
+        //     console.log(res.data);
+        //     this.setState({todos: res.data})
+        // })
     }
 
     render() {
@@ -32,13 +27,13 @@ class App extends Component {
                 <div className="todo-list-container">
                     <Form
                         todos={this.state.todos}
-                        createTask = {this.createTask.bind(this)}
+                        createTask={this.createTask.bind(this)}
                     />
                     <TodoList
                         todos={this.state.todos}
-                        saveTask = {this.saveTask.bind(this)}
-                        deleteTask = {this.deleteTask.bind(this)}
-                        toggleTask = {this.toggleTask.bind(this)}
+                        saveTask={this.saveTask.bind(this)}
+                        deleteTask={this.deleteTask.bind(this)}
+                        toggleTask={this.toggleTask.bind(this)}
                     />
                 </div>
             </div>

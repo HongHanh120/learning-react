@@ -5,7 +5,7 @@ module.exports = {
     },
     devServer: {
         contentBase: __dirname,
-        port: 2001,
+        port: 7000,
         host: 'localhost',
     },
     output: {

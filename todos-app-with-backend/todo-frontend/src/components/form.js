@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import _ from 'lodash';
+import axios from 'axios';
 
 class Form extends Component {
     constructor(props) {
@@ -23,18 +24,20 @@ class Form extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const input = this.refs.input;
-        const task = input.value;
-        const validateInput = this.validateInput(task);
+        const taskObject = {
+            task: this.state.value
+        };
 
-        if (validateInput) {
-            this.setState({error: validateInput});
-            return false;
-        }
+        axios.post('http://localhost:5000/api/v1/todos/', taskObject)
+            .then(res => {
+                console.log(res);
+                console.log(res.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
 
-        this.setState({error: null});
-        this.props.createTask(task);
-        this.refs.input.value = '';
+        this.setState({value: ''})
     };
 
     componentDidMount() {
@@ -72,6 +75,7 @@ class Form extends Component {
                                onChange={this.handleChange}
                                placeholder="What needs to be done?"
                                ref="input"
+                               value={this.state.value}
                         />
                     </div>
                     <div className="col-md-2">
@@ -81,7 +85,6 @@ class Form extends Component {
                                 onMouseEnter={this.toogleHover}
                                 onMouseLeave={this.toogleHover}
                         >Create</button>
-                        {/*{console.log(this.state.hover)}*/}
                     </div>
                 </div>
                 {this.renderError()}
@@ -93,15 +96,15 @@ class Form extends Component {
         this.setState({hover: !this.state.hover});
     };
 
-    validateInput = (task) => {
-        if (!task) {
-            return "Please enter a task";
-        } else if (_.find(this.props.todos, todo => todo.task === task)) {
-            return "Task already exist";
-        } else {
-            return null;
-        }
-    }
+    // validateInput = (task) => {
+    //     if (!task) {
+    //         return "Please enter a task";
+    //     } else if (_.find(this.props.todos, todo => todo.task === task)) {
+    //         return "Task already exist";
+    //     } else {
+    //         return null;
+    //     }
+    // }
 };
 
 export default Form;
