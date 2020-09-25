@@ -1,36 +1,20 @@
 import React, {Component} from 'react';
 import TodoItem from "./todo-item";
 import axios from 'axios';
+import _ from 'lodash'
 
 class TodoList extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {todos_collection: []};
-    }
-
-    componentDidMount() {
-        axios.get(`http://localhost:5000/api/v1/todos/`)
-            .then(res => {
-                this.setState({todos_collection: res.data.data});
-                console.log(this.state.todos_collection);
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
     }
 
     renderTodoItems() {
-        if (!this.state.todos_collection.length) {
+        if (!this.props.todos.length) {
             return null;
         }
 
-        this.state.todos_collection.map((data, index) => {
-            // console.log(data.completed + data._id)
-        });
-
         return (
-            this.state.todos_collection.map((data, index) =>
+            this.props.todos.map((data, index) =>
                 <TodoItem task={data.task} key={index} completed={data.completed} id={data._id}
                           handleToggle={this.handleToggle.bind(this)}
                           handleDelete={this.handleDelete.bind(this)}
@@ -48,8 +32,8 @@ class TodoList extends Component {
         this.props.deleteTask(this.props.task);
     };
 
-    handleSave = (oldTask, newTask) => {
-        this.props.saveTask(oldTask, newTask)
+    handleSave = (old_task, new_task) => {
+        this.props.saveTask(old_task, new_task);
     };
 
     render() {

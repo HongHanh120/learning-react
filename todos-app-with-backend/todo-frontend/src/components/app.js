@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Form from './form';
 import _ from 'lodash';
 import TodoList from "./todo-list";
+import axios from "axios";
 
 const todos = [];
 
@@ -34,6 +35,17 @@ class App extends Component {
         )
     }
 
+    componentDidMount() {
+        axios.get(`http://localhost:5000/api/v1/todos/`)
+            .then(res => {
+                this.setState({todos: res.data.data});
+                console.log(this.state.todos);
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
+    }
+
     createTask(task) {
         const {todos} = this.state;
 
@@ -46,33 +58,23 @@ class App extends Component {
     }
 
     saveTask(old_task, new_task) {
-        let found = false;
-        let index;
-        // const found_todo = _.find(this.state.todos, todo => todo.task === old_task);
-        for(let i = 0; i < todos.length; i++) {
-            if (todos[i].task === old_task) {
-                // const index = todos.indexOf(todos[i]);
-                found = true;
-                index = i;
-            }
-        }
-        if(found) {
-            todos[index].task = new_task;
-            console.log(typeof todos[index].task)
-        }
+        const found_todo = _.find(this.state.todos, todo => todo.task === old_task);
+        found_todo.task = new_task;
 
-        // if (index > -1) {
-        //     todos[index].task = new_task;
-        // }
-        console.log(old_task + "+" + new_task);
+        axios.put(`http://localhost:5000/api/v1/todos/${found_todo._id}`, {task: found_todo.task, completed: found_todo.completed})
+            .then(res => {
+                console.log(res);
+                console.log(res.data)
+            })
+            .catch((error) => {
+                console.log(error)
+            });
         this.setState({todos: this.state.todos});
-        // console.log(index);
-
     }
 
     deleteTask(task) {
         let index = todos.indexOf(todos[task]);
-        if(index > -1) {
+        if (index > -1) {
             todos.splice(index, 1);
         }
         // _.remove(this.state.todos, todo => todo.task === task);
@@ -82,7 +84,7 @@ class App extends Component {
     toggleTask(task) {
         // const found_todo = _.find(this.state.todos, todo => todo.task === task);
         let index = todos.indexOf(todos[task]);
-        if(index > -1){
+        if (index > -1) {
             todos[index].is_completed = !todos[index].is_completed;
         }
         this.setState({todos: this.state.todos})

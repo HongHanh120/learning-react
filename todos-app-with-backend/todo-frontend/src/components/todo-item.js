@@ -159,16 +159,7 @@ class TodoItem extends Component {
 
         const old_task = this.props.task;
         const new_task = this.refs.update.value;
-        // console.log(old_task + new_task);
-        axios.put(`http://localhost:5000/api/v1/todos/${this.props.id}`, this.props.handleSave(old_task, new_task))
-            .then(res => {
-                console.log(res);
-                console.log(res.data)
-            })
-            .catch((error) => {
-                console.log(error)
-            });
-        // this.props.handleSave(old_task, new_task);
+        this.props.handleSave(old_task, new_task);
         this.setState({is_editing: false, hover_save: false, hover_edit: true})
     }
 }
