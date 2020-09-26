@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-
 class Form extends Component {
     constructor(props) {
         super(props);
@@ -38,6 +37,7 @@ class Form extends Component {
                 console.log(error)
             });
 
+        this.props.getTaskList();
         this.setState({value: ''})
     };
 

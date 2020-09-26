@@ -12,7 +12,17 @@ class App extends Component {
 
         this.state = {
             todos: todos
-        }
+        };
+
+        // axios.get(`http://localhost:5000/api/v1/todos/`)
+        //     .then(res => {
+        //         this.setState({todos: res.data.data});
+        //         console.log(this.state.todos);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error)
+        //     })
+        this.getTaskList()
     }
 
     render() {
@@ -23,6 +33,7 @@ class App extends Component {
                     <Form
                         todos={this.state.todos}
                         createTask={this.createTask.bind(this)}
+                        getTaskList={this.getTaskList.bind(this)}
                     />
                     <TodoList
                         todos={this.state.todos}
@@ -35,7 +46,8 @@ class App extends Component {
         )
     }
 
-    componentDidMount() {
+
+    getTaskList() {
         axios.get(`http://localhost:5000/api/v1/todos/`)
             .then(res => {
                 this.setState({todos: res.data.data});
@@ -54,6 +66,8 @@ class App extends Component {
             task,
             is_completed: false
         });
+
+        this.getTaskList();
         this.setState({todos: this.state.todos});
     }
 
@@ -61,7 +75,10 @@ class App extends Component {
         const found_todo = _.find(this.state.todos, todo => todo.task === old_task);
         found_todo.task = new_task;
 
-        axios.put(`http://localhost:5000/api/v1/todos/${found_todo._id}`, {task: found_todo.task, completed: found_todo.completed})
+        axios.put(`http://localhost:5000/api/v1/todos/${found_todo._id}`, {
+            task: found_todo.task,
+            completed: found_todo.completed
+        })
             .then(res => {
                 console.log(res);
                 console.log(res.data)
@@ -73,21 +90,36 @@ class App extends Component {
     }
 
     deleteTask(task) {
-        let index = todos.indexOf(todos[task]);
-        if (index > -1) {
-            todos.splice(index, 1);
-        }
-        // _.remove(this.state.todos, todo => todo.task === task);
+        const found_todo = _.find(this.state.todos, todo => todo.task === task);
+        console.log(found_todo._id);
+        axios.delete(`http://localhost:5000/api/v1/todos/${found_todo._id}`)
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                this.getTaskList();
+            })
+            .catch((error) => {
+                console.log(error)
+            });
         this.setState({todos: this.state.todos});
     }
 
     toggleTask(task) {
-        // const found_todo = _.find(this.state.todos, todo => todo.task === task);
-        let index = todos.indexOf(todos[task]);
-        if (index > -1) {
-            todos[index].is_completed = !todos[index].is_completed;
-        }
-        this.setState({todos: this.state.todos})
+        const found_todo = _.find(this.state.todos, todo => todo.task === task);
+        if (found_todo.completed)
+            found_todo.completed = false;
+        else
+            found_todo.completed = true;
+
+        axios.put(`http://localhost:5000/api/v1/todos/${found_todo._id}`, {task: task, completed: found_todo.completed})
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+        this.setState({todos: this.state.todos});
     }
 }
 

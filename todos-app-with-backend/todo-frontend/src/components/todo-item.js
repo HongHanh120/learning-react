@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from "axios";
 
 class TodoItem extends Component {
     constructor(props) {
@@ -16,11 +15,11 @@ class TodoItem extends Component {
     }
 
     renderTaskSection() {
-        const {is_completed, task} = this.props;
+        const {completed, task} = this.props;
         // console.log(task);
 
         let task_style = {
-            color: is_completed ? '#007bff' : '#d9534f',
+            color: completed ? '#007bff' : '#d9534f',
             cursor: "pointer"
         };
 
@@ -44,7 +43,7 @@ class TodoItem extends Component {
                    style={task_style}
                    onMouseEnter={this.toggleHover.bind(this)}
                    onMouseLeave={this.toggleHover.bind(this)}
-                   onClick={(e) => this.props.handleToggle}>{task}
+                   onClick={this.onTaskClick.bind(this)}>{task}
             </label>
         )
     }
@@ -87,7 +86,7 @@ class TodoItem extends Component {
                       style={edit_icon_style} onMouseEnter={this.toggleHoverEdit.bind(this)}
                       onMouseLeave={this.toggleHoverEdit.bind(this)}> </span>
                 &nbsp; &nbsp; &nbsp;
-                <span className="fa fa-trash" onClick={(e) => this.props.handleDelete}
+                <span className="fa fa-trash" onClick={this.onDeleteClick.bind(this)}
                       style={delete_icon_style} onMouseEnter={this.toggleHoverDelete.bind(this)}
                       onMouseLeave={this.toggleHoverDelete.bind(this)}> </span>
             </div>
@@ -95,9 +94,9 @@ class TodoItem extends Component {
     }
 
     renderStateSection() {
-        const {is_completed} = this.props;
+        const {completed} = this.props;
 
-        if(is_completed) {
+        if(completed) {
             return(
                 <div className="col-md-1 text-left">
                     <span className="fa fa-check-square-o"> </span>
@@ -161,6 +160,18 @@ class TodoItem extends Component {
         const new_task = this.refs.update.value;
         this.props.handleSave(old_task, new_task);
         this.setState({is_editing: false, hover_save: false, hover_edit: true})
+    }
+
+    onDeleteClick(event) {
+        event.preventDefault();
+        const task = this.props.task;
+        this.props.handleDelete(task);
+    }
+
+    onTaskClick(event) {
+        event.preventDefault();
+        const task = this.props.task;
+        this.props.handleToggle(task);
     }
 }
 

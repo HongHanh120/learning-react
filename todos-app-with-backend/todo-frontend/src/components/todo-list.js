@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import TodoItem from "./todo-item";
-import axios from 'axios';
-import _ from 'lodash'
 
 class TodoList extends Component {
     constructor(props) {
@@ -24,12 +22,12 @@ class TodoList extends Component {
         );
     }
 
-    handleToggle = () => {
-        this.props.toggleTask(this.props.task);
+    handleToggle = (task) => {
+        this.props.toggleTask(task);
     };
 
-    handleDelete = () => {
-        this.props.deleteTask(this.props.task);
+    handleDelete = (task) => {
+        this.props.deleteTask(task);
     };
 
     handleSave = (old_task, new_task) => {
